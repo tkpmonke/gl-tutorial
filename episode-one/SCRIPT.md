@@ -2,10 +2,13 @@
 
 ## Preface
 What this is
+
     - A pong tutorial
     - The basics of graphics programming
     - Triangle and Quad rendering using OpenGL
+
 What this isn't
+
     - A C++ tutorial
     - A GLFW/GLEW installation tutorial (you should already have these downloaded and linked)
 
