@@ -69,7 +69,7 @@ We can prevent this by doing the following.
 
 ```cpp
 while (glfwWindowShouldClose(window) == false) {
-// put main loop here
+	// put main loop here
 }
 ```
 
@@ -202,9 +202,9 @@ Below is our first Vertex Shader, it takes in a `vec3` that serves as the x,y,z 
 layout (location = 0) in vec3 in_pos;
 
 void main() {
-    /// gl_Position is the position of the vertex on the screen
-    /// we will do more with the vertex shader later on in the series
-    gl_Position = vec4(in_pos, 1);
+    	/// gl_Position is the position of the vertex on the screen
+    	/// we will do more with the vertex shader later on in the series
+	gl_Position = vec4(in_pos, 1);
 }
 ```
 
@@ -228,8 +228,8 @@ The Fragment Shader isn't too much different from the Vertex Shader. However, in
 out vec4 color;
 
 void main() {
-    /// display green
-    color = vec4(0.2f, 0.7f, 0.3f, 1.0f);
+	/// display green
+	color = vec4(0.2f, 0.7f, 0.3f, 1.0f);
 }
 ```
 
@@ -250,17 +250,17 @@ To compile a shader, were going to need the following three functions
 ```cpp
 /// Check if the shader was compiled correctly
 bool check_shader_compilation(unsigned int shader) {
-    // ...
+	// ...
 }
 
 /// Compile the shader
 unsigned int compile_shader(const int type, const char* value) {
-    // ...
+	// ...
 }
 
 /// Assemble the Shaders into a Program Object (i'll explain later)
 unsigned int create_program(unsigned int vertex, unsigned int fragment) {
-    // ...
+	// ...
 }
 ```
 
@@ -276,7 +276,7 @@ unsigned int compile_shader(const int type, const char* value) {
 	glShaderSource(shader, 1, &value, NULL);
 	glCompileShader(shader);
 
-    /// Ensure that the shader compiled correctly before returning it
+	/// Ensure that the shader compiled correctly before returning it
 	return check_shader_compilation(shader) ? shader : 0;
 }
 ```
@@ -319,10 +319,10 @@ So now the `create_program` function should look something like this
 
 ```cpp
 unsigned int create_program(unsigned int vertex, unsigned int fragment) {
-    unsigned int program = glCreateProgram();
-    glAttachShader(program, vertex);
-    glAttachShader(program, fragment);
-    glLinkProgram(program);
+	unsigned int program = glCreateProgram();
+	glAttachShader(program, vertex);
+	glAttachShader(program, fragment);
+	glLinkProgram(program);
 
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
