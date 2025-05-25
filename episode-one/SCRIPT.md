@@ -272,7 +272,7 @@ You can attach multiple shaders to one shader object, but we won't be doing that
 
 ```
 unsigned int compile_shader(const int type, const char* value) {
-    unsigned int shader = glCreateShader(type);
+	unsigned int shader = glCreateShader(type);
 	glShaderSource(shader, 1, &value, NULL);
 	glCompileShader(shader);
 
