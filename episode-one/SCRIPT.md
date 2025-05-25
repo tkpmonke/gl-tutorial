@@ -40,7 +40,7 @@ This tutorial assumes that you are using GLFW, if you are not, skip this part an
 
 We can start by using GLFW to create a window by using the following functions.
 
-```
+```cpp
 glfwInit();
 GLFWwindow* window = glfwCreateWindow(width, height, name, monitor, share);
 ```
@@ -55,7 +55,7 @@ Share is used for when you want multiple windows that share resources with each 
 
 If we want support for OpenGL, we need an OpenGL context. Thankfully, GLFW creates one for us with the following function.
 
-```
+```cpp
 glfwMakeContextCurrent(window);
 ```
 
@@ -67,7 +67,7 @@ This is due to us creating the window an immediately shutting down.
 
 We can prevent this by doing the following.
 
-```
+```cpp
 while (glfwWindowShouldClose(window) == false) {
 // put main loop here
 }
@@ -87,7 +87,7 @@ And there we have it. You should now see a window with a black background.
 
 Before we get into actual OpenGL, we need to make sure that we clean up GLFW. This can be done by putting the following at the end of our file.
 
-```
+```cpp
 glfwDestroyWindow(window);
 glfwTerminate();
 ```
@@ -97,7 +97,7 @@ This cleans up GLFW and prevents memory leaks from occuring (which is always a g
 ## Initilizing OpenGL
 This is probably going to be the easiest step. All you have to do is call one function.
 
-```
+```cpp
 glewInit();
 ```
 
@@ -112,7 +112,7 @@ While black can look nice, I think we should get another color as the background
 
 To set the color that OpenGL clears the screen too, we call the following function before `glClear`.
 
-```
+```cpp
 // RGBA, this puts it as a nice blue color
 glSetClearColor(0.2f, 0.3f, 0.7f, 1.0f);
 ```
@@ -121,7 +121,7 @@ glSetClearColor(0.2f, 0.3f, 0.7f, 1.0f);
 
 This is what our main function should roughly look like by now.
 
-```
+```cpp
 glfwInit();
 GLFWwindow* window = glfwCreateWindow(1280, 720, "Episode One", NULL, NULL);
 glfwMakeContextCurrent(window);
@@ -195,7 +195,7 @@ In OpenGL, shaders are written in a language called GLSL. Its syntax is simular 
 
 Below is our first Vertex Shader, it takes in a `vec3` that serves as the x,y,z of the vertex we are processing.
 
-```
+```glsl
 #version 330 core /// #version is always required to be the first line of any GLSL shader.
 
 /// position of the vertex we are processing
@@ -210,7 +210,7 @@ void main() {
 
 Now we want to put this inside of a C string, so then we can use it with OpenGL.
 
-```
+```cpp
 static const char* vertex_shader = 
 "#version 330 core\n"
 "layout (location = 0) in vec3 in_pos;\n"
@@ -221,7 +221,7 @@ static const char* vertex_shader =
 
 The Fragment Shader isn't too much different from the Vertex Shader. However, instead of outputing to `gl_Position` we create a new variable with the `out` keyword and put the color value into that
 
-```
+```glsl
 #version 330 core
 
 /// the color we want to display
@@ -235,7 +235,7 @@ void main() {
 
 Just like the vertex shader, we want this in C string format
 
-```
+```cpp
 static const char* fragment_shader =
 "#version 330 core\n"
 "out vec4 color;\n"
@@ -247,7 +247,7 @@ static const char* fragment_shader =
 ## Shader Compilation
 To compile a shader, were going to need the following three functions
 
-```
+```cpp
 /// Check if the shader was compiled correctly
 bool check_shader_compilation(unsigned int shader) {
     // ...
@@ -270,7 +270,7 @@ We need to create a shader object and tell OpenGL where the source of the shader
 
 You can attach multiple shaders to one shader object, but we won't be doing that
 
-```
+```cpp
 unsigned int compile_shader(const int type, const char* value) {
 	unsigned int shader = glCreateShader(type);
 	glShaderSource(shader, 1, &value, NULL);
@@ -283,7 +283,7 @@ unsigned int compile_shader(const int type, const char* value) {
 
 To check if a shader is compiled correctly, we get the status of the shader using `glGetShaderiv` and if it fails to compile, we can get the error message using `glGetShaderInfoLog`
 
-```
+```cpp
 bool check_shader_compilation(unsigned int shader) {
 	int success;
 	char info_log[512];
@@ -301,7 +301,7 @@ If we want to actually use the compiled shaders when rendering, we need to link 
 
 To create one, we call `glCreateProgram` and attach all of the shaders, then link them together using `glLinkProgram`
 
-```
+```cpp
 unsigned int program = glCreateProgram();
 glAttachShader(program, vertex);
 glAttachShader(program, fragment);
@@ -310,14 +310,14 @@ glLinkProgram(program);
 
 Since we no longer need the Shader Objects, we can delete those once we link the program
 
-```
+```cpp
 glDeleteShader(vertex);
 glDeleteShader(fragment);
 ```
 
 So now the `create_program` function should look something like this
 
-```
+```cpp
 unsigned int create_program(unsigned int vertex, unsigned int fragment) {
     unsigned int program = glCreateProgram();
     glAttachShader(program, vertex);
