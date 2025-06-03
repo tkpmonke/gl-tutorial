@@ -53,6 +53,15 @@ Monitor is the monitor to use if we want a full screen window. Since we don't wa
 
 Share is used for when you want multiple windows that share resources with each other. Just like monitor, we can set this to NULL since we aren't using it.
 
+If `glfwInit` fails, it will return a false, so to check that we do the following
+
+```cpp
+if (!glfwInit()) {
+	std::cout << "GLFW Failed To Init\n";
+	return 1;
+}
+```
+
 If we want support for OpenGL, we need an OpenGL context. Thankfully, GLFW creates one for us with the following function.
 
 ```cpp
@@ -102,6 +111,15 @@ glewInit();
 ```
 
 Thats it. We now have access to OpenGL :sunglasses:
+
+In case `glewInit` fails, we still want to ensure that we close when it fails. The error code that `glewInit` is slightly different from the return value of `glfwInit`, so instead of checking if it is false, we check to see if it is greater than 0.
+
+```cpp
+if (glewInit() > 0) {
+	std::cout << "GLEW Failed To Init\n";
+	return 2;
+}
+```
 
 ## Clearing the Screen
 If we want to actually render things, we must clear the back buffer before we do any actual rendering.

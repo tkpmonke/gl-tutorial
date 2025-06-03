@@ -56,11 +56,18 @@ unsigned int create_program(unsigned int vertex, unsigned int fragment) {
 }
 
 int main(void) {
-	glfwInit();
+	if (!glfwInit()) {
+		std::cout << "GLFW Failed To Init\n";
+		return 1;
+	}
+
 	GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Episode One", NULL, NULL);
 	glfwMakeContextCurrent(window);
 
-	glewInit();
+	if (glewInit() > 0) {
+		std::cout << "GLEW Failed To Init\n";
+		return 2;
+	}
 
 	unsigned int vertex = compile_shader(GL_VERTEX_SHADER, vertex_shader);
 	unsigned int fragment = compile_shader(GL_FRAGMENT_SHADER, fragment_shader);
